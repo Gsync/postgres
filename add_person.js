@@ -14,24 +14,23 @@ var knex = require('knex')({
   }
 });
 
-const query = knex.select().from('famous_people').where('first_name', args.toString()).orWhere('last_name', args.toString());
+const query = knex('famous_people').insert({first_name: args[0], last_name: args[1], birthdate: args[2]});
 console.log(query.toString());
-
-
-function outputPeople(people) {
-
-  people.forEach((result) => {
-    console.log(`Found ${people.length} person(s) by the name of '${args.toString()}'`);
-    console.log("Searching...\n")
-    console.log(`${result.first_name} ${result.last_name}, born '${(result.birthdate).toISOString()}'`);
-  });
-}
 
 query.asCallback((error, results) => {
 
-    outputPeople(results);
+    console.log(`${results.length} row added!`);
 
     knex.destroy();
 });
+
+// function outputPeople(people) {
+
+//   people.forEach((result) => {
+//     console.log(`Found ${people.length} person(s) by the name of '${args.toString()}'`);
+//     console.log("Searching...\n")
+//     console.log(`${result.first_name} ${result.last_name}, born '${result.birthdate}'`);
+//   });
+// }
 
 
